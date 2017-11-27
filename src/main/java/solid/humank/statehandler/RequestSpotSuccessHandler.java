@@ -10,6 +10,10 @@ public class RequestSpotSuccessHandler implements RequestHandler<EC2RequestResul
 
     @Override
     public NotifyInfo handleRequest(EC2RequestResult input, Context context) {
-        return null;
+
+        NotifyInfo notifyInfo = new NotifyInfo();
+        notifyInfo.setSubject("test information for send");
+
+        return notifyInfo;
     }
 }
