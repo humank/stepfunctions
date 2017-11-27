@@ -6,7 +6,7 @@ At starting state, make a spot request, if fail then create EC2 on-demand instan
 
 # Define a lambda function
 
-To implement  RequestHandler class with input pojo and output pojo will be better choice.
+To implement  RequestHandler class with input pojo and output pojo will be a  better choice.
 
 Never just leave a String class to be within. That's not readable.
 
@@ -35,4 +35,28 @@ public class RequestSpotHandler implements RequestHandler<EC2Request, EC2Request
 
 # Deploy a lambda function by aws cli
 
+* Create RequestSpotHandler
+
+```
+ aws lambda create-function
+--function-name RequestSpotHandler
+--runtime java8
+--role <YourIAMRoleWhichHasLambdaExecutionPolicies>
+--handler <value>
+[--code <value>]
+[--description <value>]
+[--timeout <value>]
+[--memory-size <value>]
+[--publish | --no-publish]
+[--vpc-config <value>]
+[--dead-letter-config <value>]
+[--environment <value>]
+[--kms-key-arn <value>]
+[--tracing-config <value>]
+[--tags <value>]
+[--zip-file <value>]
+[--cli-input-json <value>]
+[--generate-cli-skeleton <value>]
+
+```
 
