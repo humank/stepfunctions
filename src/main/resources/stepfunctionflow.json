@@ -31,14 +31,14 @@
     "RequestSpotSuccess": {
       "Type": "Task",
       "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:OnSecondMatch",
-      "Next": "SendSNS"
+      "Next": "ResultNotify"
     },
     "NotHandled": {
       "Type": "Fail",
       "Error": "NotHandledError",
       "Cause": "No Matches!"
     },
-    "SendSNS": {
+    "ResultNotify": {
       "Type": "Task",
       "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:FUNCTION_NAME",
       "End": true
