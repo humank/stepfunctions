@@ -1,0 +1,47 @@
+{
+  "Comment": "Create EC2 instances by SpotRequest, if fail create On-demand instances instead. Finally send SNS to notify.",
+  "StartAt": "RequestSpot",
+  "States": {
+    "RequestSpot": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:FUNCTION_NAME",
+      "Next": "ChoiceState"
+    },
+    "ChoiceState": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.foo",
+          "StringEquals": "FAIL",
+          "Next": "RequestSpotFail"
+        },
+        {
+          "Variable": "$.foo",
+          "StringEquals": "SUCCESS",
+          "Next": "RequestSpotSuccess"
+        }
+      ],
+      "Default": "NotHandled"
+    },
+    "RequestSpotFail": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:OnFirstMatch",
+      "Next": "SendSNS"
+    },
+    "RequestSpotSuccess": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:OnSecondMatch",
+      "Next": "SendSNS"
+    },
+    "NotHandled": {
+      "Type": "Fail",
+      "Error": "NotHandledError",
+      "Cause": "No Matches!"
+    },
+    "SendSNS": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:FUNCTION_NAME",
+      "End": true
+    }
+  }
+}
