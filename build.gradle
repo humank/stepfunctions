@@ -26,8 +26,15 @@ dependencies {
     compile 'com.amazonaws:aws-lambda-java-log4j:1.0.0'
     compile 'com.amazonaws:aws-lambda-java-log4j2:1.0.0'
     compile 'joda-time:joda-time:2.9.9'
-    //compile 'org.projectlombok:lombok:1.16.18'
+    compile 'org.projectlombok:lombok:1.16.18'
 
+}
+
+jar {
+    from(configurations.runtime) {
+        into 'lib'
+        exclude('*aws*.jar')
+    }
 }
 
 task update(type:Exec){

@@ -34,7 +34,7 @@ Configutation:
           - ref: Lambda
 
       Logger:
-        - name: guru.springframework.blog.log4j2yaml
+        - name: solid.humank
           level: debug
           AppenderRef:
             - ref: File_Appender
