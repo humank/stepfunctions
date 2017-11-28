@@ -3,6 +3,7 @@
 
 # User-specific stuff:
 .idea/*
+.idea/**/
 
 # CMake
 cmake-build-debug/
@@ -15,6 +16,7 @@ cmake-build-debug/
 # IntelliJ
 out/
 
+build/
 
 # JIRA plugin
 atlassian-ide-plugin.xml

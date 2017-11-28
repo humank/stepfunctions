@@ -6,17 +6,18 @@ public class EC2RequestResult {
 
     }
 
-    public EC2RequestResult(String requestSuccess) {
+    public EC2RequestResult(String requestResult) {
+        this.result = requestResult;
     }
 
     public String getResult() {
-        return Result;
+        return result;
     }
 
     public void setResult(String result) {
-        Result = result;
+        result = result;
     }
 
-    private String Result;
+    private String result;
 
 }

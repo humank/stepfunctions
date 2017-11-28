@@ -1,18 +1,24 @@
 package solid.humank.model;
 
-import org.joda.time.DateTime;
-
 public class NotifyInfo {
 
     private String subject;
-    private DateTime dateTime;
 
     public NotifyInfo() {
 
     }
 
+    public NotifyInfo(String subject) {
+        this.subject = subject;
+    }
+
     public void setSubject(String subject) {
 
         this.subject = subject;
+    }
+
+    public String getSubject() {
+
+        return this.subject;
     }
 }

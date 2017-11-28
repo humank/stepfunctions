@@ -38,25 +38,13 @@ public class RequestSpotHandler implements RequestHandler<EC2Request, EC2Request
 * Create RequestSpotHandler
 
 ```
- aws lambda create-function
---function-name RequestSpotHandler
---runtime java8
---role <YourIAMRoleWhichHasLambdaExecutionPolicies>
---handler <value>
-[--code <value>]
-[--description <value>]
-[--timeout <value>]
-[--memory-size <value>]
-[--publish | --no-publish]
-[--vpc-config <value>]
-[--dead-letter-config <value>]
-[--environment <value>]
-[--kms-key-arn <value>]
-[--tracing-config <value>]
-[--tags <value>]
-[--zip-file <value>]
-[--cli-input-json <value>]
-[--generate-cli-skeleton <value>]
-
+aws lambda create-function \
+--function-name RequestSpotHandler \
+--runtime java8 \
+--role arn:aws:iam::584518143473:role/LambdaRole \
+--handler solid.humank.statehandler.RequestSpotHandler::handleRequest \
+--vpc-config SubnetIds=subnet-7aff5b33,subnet-c0091698,SecurityGroupIds=sg-799db31f \
+--tags Name=QA-Env-Lambda-RequestSpot \
+--zip-file fileb://~/git/stepfunctions/build/libs/stepfunctions-1.0-SNAPSHOT.jar
 ```
 
