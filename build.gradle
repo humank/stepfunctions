@@ -30,9 +30,14 @@ dependencies {
 
 }
 
-//task depReqSpot() {
-//
-//    exec {
-//        executable "scripts/deployRequestSpotFunc.sh"
-//    }
-//}
+task update(type:Exec){
+    workingDir '.'
+    commandLine 'scripts/updateLambdaFunc.sh'
+    ignoreExitValue true
+}
+
+task deploy(type:Exec){
+    workingDir '.'
+    commandLine 'scripts/deployLambdaFunc.sh'
+    ignoreExitValue true
+}
