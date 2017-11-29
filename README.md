@@ -41,10 +41,10 @@ public class RequestSpotHandler implements RequestHandler<EC2Request, EC2Request
 aws lambda create-function \
 --function-name RequestSpotHandler \
 --runtime java8 \
---role arn:aws:iam::584518143473:role/LambdaRole \
+--role <your arn iamrole> \
 --handler solid.humank.statehandler.RequestSpotHandler::handleRequest \
---vpc-config SubnetIds=subnet-7aff5b33,subnet-c0091698,SecurityGroupIds=sg-799db31f \
+--vpc-config SubnetIds=[subnet-*,subnet-*],SecurityGroupIds=sg-* \
 --tags Name=QA-Env-Lambda-RequestSpot \
---zip-file fileb://~/git/stepfunctions/build/libs/stepfunctions-1.0-SNAPSHOT.jar
+--zip-file fileb://${project build output folder}/stepfunctions-1.0-SNAPSHOT.jar
 ```
 
