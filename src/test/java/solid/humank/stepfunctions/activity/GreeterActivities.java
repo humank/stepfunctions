@@ -1,3 +1,5 @@
+package solid.humank.stepfunctions.activity;
+
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.regions.Regions;

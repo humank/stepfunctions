@@ -1,3 +1,5 @@
+package solid.humank.uitls;
+
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import solid.humank.model.EC2Request;
