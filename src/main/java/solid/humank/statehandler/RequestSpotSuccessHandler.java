@@ -16,7 +16,7 @@ public class RequestSpotSuccessHandler implements RequestHandler<EC2RequestResul
         LambdaLogger logger = context.getLogger();
         logger.log("check param result : " + input.getResult());
 
-        //TODO Retrieve RequestResult info to provide detail.
+        //TODO Retrieve RequestResult info to provide detail.gst
 
         return new NotifyInfo(ExecuteResult.SPOT_INSTANCT_REQUEST_SUCCESS.toString());
     }

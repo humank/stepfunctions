@@ -30,7 +30,7 @@ public class ASGCreator {
         CreateAutoScalingGroupRequest asgRequest = new CreateAutoScalingGroupRequest();
 
         //create launch configuration
-        String launchConfigurationName = createLaunchConfiguration(as);
+        String launchConfigurationName = createLaunchConfiguration(as, 0);
 
         //apply tags
         List<Tag> asgTags = applyTags();
@@ -38,9 +38,9 @@ public class ASGCreator {
         asgRequest.withAutoScalingGroupName("myAutoScalingGroup")
                 .withLaunchConfigurationName(launchConfigurationName)
                 .withAvailabilityZones(azNames)
-                .withDesiredCapacity(5)
-                .withMaxSize(10)
-                .withMinSize(5)
+                .withDesiredCapacity(3)
+                .withMaxSize(6)
+                .withMinSize(3)
                 .withTargetGroupARNs("arn:aws:elasticloadbalancing:ap-northeast-1:584518143473:targetgroup/TG-lab-ALB-16NABNOLSNMWC/9f8c337c46e80d77")
                 .withVPCZoneIdentifier("subnet-77f8703e, subnet-43a36218")
                 .withTags(asgTags);
@@ -54,22 +54,23 @@ public class ASGCreator {
         List<Tag> asgTags = new ArrayList<Tag>();
         asgTags.add(
                 new Tag().withKey("Name")
-                    .withValue("InstanceFromASG")
-                .withPropagateAtLaunch(true)
+                        .withValue("InstanceFromASG")
+                        .withPropagateAtLaunch(true)
         );
         return asgTags;
     }
 
-    private String createLaunchConfiguration(AmazonAutoScaling as) {
+    private String createLaunchConfiguration(AmazonAutoScaling as, double spotPrice) {
         CreateLaunchConfigurationRequest lcr = new CreateLaunchConfigurationRequest();
         lcr.withImageId("ami-da9e2cbc")
                 .withInstanceType("t2.micro")
                 .withKeyName("labuserkey")
-                .withLaunchConfigurationName("myLC")
-                .withSecurityGroups("lab-SG-PKDT24OQIGEE-EC2HostSecurityGroup-GQ9GPFW3WNZF")
-                .withSpotPrice("0.02")
+                //.withSecurityGroups("lab-SG-PKDT24OQIGEE-EC2HostSecurityGroup-GQ9GPFW3WNZF")
                 .withLaunchConfigurationName("myLaunchConfigurationName")
                 .withAssociatePublicIpAddress(true);
+        if (spotPrice > 0) {
+            lcr.withSpotPrice(Double.toString(spotPrice));
+        }
 
         String launchConfigurationName = lcr.getLaunchConfigurationName();
         CreateLaunchConfigurationResult result = as.createLaunchConfiguration(lcr);
