@@ -1,5 +1,6 @@
 package solid.humank.solid.humank.requestEC2;
 
+import com.amazonaws.services.autoscaling.model.CreateAutoScalingGroupResult;
 import com.amazonaws.services.autoscaling.model.Tag;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
@@ -28,6 +29,7 @@ public class OnDemandASGEC2Test {
     String vpcIdSubnets;
     String keyName;
     double spotPrice;
+    String securityGroups;
 
     @Before
     public void init_vpc_environment() {
@@ -39,6 +41,7 @@ public class OnDemandASGEC2Test {
         tags = createTags();
         vpcIdSubnets = "subnet-77f8703e, subnet-43a36218";
         spotPrice = 0.0;
+        securityGroups = "lab-SG-PKDT24OQIGEE-EC2HostSecurityGroup-GQ9GPFW3WNZF";
     }
 
     private List<Tag> createTags() {
@@ -62,7 +65,8 @@ public class OnDemandASGEC2Test {
     public void request_for_on_demand_ec2_with_asg() {
 
         ASGCreator asgCreator = new ASGCreator();
-        asgCreator.requestASGEC2(asgName, launchConfigurationName, imageId, instanceType, targetGroupArn, tags, vpcIdSubnets, keyName, spotPrice);
+        CreateAutoScalingGroupResult result = asgCreator.requestASGEC2(asgName, launchConfigurationName, imageId, instanceType, targetGroupArn, tags, vpcIdSubnets, keyName, spotPrice, securityGroups);
+
 
     }
 

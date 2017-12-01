@@ -1,5 +1,6 @@
 package solid.humank.solid.humank.requestEC2;
 
+import com.amazonaws.services.autoscaling.model.CreateAutoScalingGroupResult;
 import com.amazonaws.services.autoscaling.model.Tag;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
@@ -12,7 +13,7 @@ import solid.humank.uitls.AsgUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpotASGWithExpectedPrice {
+public class SpotASGWithExpectedPriceTest {
     public static final Logger logger = org.apache.logging.log4j.LogManager.getLogger(OnDemandASGEC2Test.class);
 
     String launchConfigurationName;
@@ -24,6 +25,7 @@ public class SpotASGWithExpectedPrice {
     String vpcIdSubnets;
     String keyName;
     double spotPrice;
+    String securityGroups;
 
     @Before
     public void init_vpc_environment() {
@@ -35,6 +37,7 @@ public class SpotASGWithExpectedPrice {
         tags = createTags();
         vpcIdSubnets = "subnet-77f8703e, subnet-43a36218";
         spotPrice = 0.02;
+        securityGroups = "lab-SG-PKDT24OQIGEE-EC2HostSecurityGroup-GQ9GPFW3WNZF";
     }
 
     private List<Tag> createTags() {
@@ -58,8 +61,8 @@ public class SpotASGWithExpectedPrice {
     public void request_for_on_demand_ec2_with_asg() {
 
         ASGCreator asgCreator = new ASGCreator();
-        asgCreator.requestASGEC2(asgName, launchConfigurationName, imageId, instanceType, targetGroupArn, tags, vpcIdSubnets, keyName, spotPrice);
-
+        CreateAutoScalingGroupResult result = asgCreator.requestASGEC2(asgName, launchConfigurationName, imageId, instanceType, targetGroupArn, tags, vpcIdSubnets, keyName, spotPrice, securityGroups);
+        logger.info(result.getSdkResponseMetadata().toString());
     }
 
 

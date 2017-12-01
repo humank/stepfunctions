@@ -17,7 +17,7 @@ public class ASGCreator {
 
     public static final Logger logger = LogManager.getLogger(ASGCreator.class);
 
-    public CreateAutoScalingGroupResult requestASGEC2(String asgName, String launchConfigurationName, String imageId, String instanceType, String targetGroupArn, List<Tag> tags, String vpcIdSubnets, String keyName, double spotPrice) {
+    public CreateAutoScalingGroupResult requestASGEC2(String asgName, String launchConfigurationName, String imageId, String instanceType, String targetGroupArn, List<Tag> tags, String vpcIdSubnets, String keyName, double spotPrice, String securityGroups) {
         //build client
         AmazonEC2 ec2 = AmazonEC2ClientBuilder.defaultClient();
 
@@ -29,7 +29,7 @@ public class ASGCreator {
         CreateAutoScalingGroupRequest asgRequest = new CreateAutoScalingGroupRequest();
 
         //create launch configuration
-        createLaunchConfiguration(launchConfigurationName, autoScaling, imageId, instanceType, keyName, spotPrice);
+        createLaunchConfiguration(launchConfigurationName, autoScaling, imageId, instanceType, keyName, spotPrice, securityGroups);
 
         asgRequest.withAutoScalingGroupName(asgName)
                 .withLaunchConfigurationName(launchConfigurationName)
@@ -46,12 +46,12 @@ public class ASGCreator {
         return result;
     }
 
-    private String createLaunchConfiguration(String launchConfigurationName, AmazonAutoScaling as, String imageId, String instanceType, String keyName, double spotPrice) {
+    private String createLaunchConfiguration(String launchConfigurationName, AmazonAutoScaling as, String imageId, String instanceType, String keyName, double spotPrice, String securityGroups) {
         CreateLaunchConfigurationRequest lcr = new CreateLaunchConfigurationRequest();
         lcr.withImageId(imageId)
                 .withInstanceType(instanceType)
                 .withKeyName(keyName)
-                //.withSecurityGroups("lab-SG-PKDT24OQIGEE-EC2HostSecurityGroup-GQ9GPFW3WNZF")
+                .withSecurityGroups(securityGroups)
                 .withLaunchConfigurationName(launchConfigurationName)
                 .withAssociatePublicIpAddress(true);
         if (spotPrice > 0) {
