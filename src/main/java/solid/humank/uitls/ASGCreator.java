@@ -17,65 +17,50 @@ public class ASGCreator {
 
     public static final Logger logger = LogManager.getLogger(ASGCreator.class);
 
-    public void create() {
-
+    public CreateAutoScalingGroupResult requestASGOnDemandEC2(String asgName, String launchConfigurationName, String imageId, String instanceType, String targetGroupArn, List<Tag> tags, String vpcIdSubnets, String keyName) {
         //build client
         AmazonEC2 ec2 = AmazonEC2ClientBuilder.defaultClient();
 
         //Get current region AZs
         List<String> azNames = getAZs(ec2);
 
-        AmazonAutoScaling as = AmazonAutoScalingClientBuilder.defaultClient();
+        AmazonAutoScaling autoScaling = AmazonAutoScalingClientBuilder.defaultClient();
 
         CreateAutoScalingGroupRequest asgRequest = new CreateAutoScalingGroupRequest();
 
         //create launch configuration
-        String launchConfigurationName = createLaunchConfiguration(as, 0);
+        createLaunchConfiguration(launchConfigurationName, autoScaling, imageId, instanceType, keyName, 0);
 
-        //apply tags
-        List<Tag> asgTags = applyTags();
-
-        asgRequest.withAutoScalingGroupName("myAutoScalingGroup")
+        asgRequest.withAutoScalingGroupName(asgName)
                 .withLaunchConfigurationName(launchConfigurationName)
                 .withAvailabilityZones(azNames)
                 .withDesiredCapacity(3)
                 .withMaxSize(6)
                 .withMinSize(3)
-                .withTargetGroupARNs("arn:aws:elasticloadbalancing:ap-northeast-1:584518143473:targetgroup/TG-lab-ALB-16NABNOLSNMWC/9f8c337c46e80d77")
-                .withVPCZoneIdentifier("subnet-77f8703e, subnet-43a36218")
-                .withTags(asgTags);
+                .withTargetGroupARNs(targetGroupArn)
+                .withVPCZoneIdentifier(vpcIdSubnets)
+                .withTags(tags);
 
-        CreateAutoScalingGroupResult result = as.createAutoScalingGroup(asgRequest);
+        CreateAutoScalingGroupResult result = autoScaling.createAutoScalingGroup(asgRequest);
         logger.info("Running Result : {}", result);
-
+        return result;
     }
 
-    private List<Tag> applyTags() {
-        List<Tag> asgTags = new ArrayList<Tag>();
-        asgTags.add(
-                new Tag().withKey("Name")
-                        .withValue("InstanceFromASG")
-                        .withPropagateAtLaunch(true)
-        );
-        return asgTags;
-    }
-
-    private String createLaunchConfiguration(AmazonAutoScaling as, double spotPrice) {
+    private String createLaunchConfiguration(String launchConfigurationName, AmazonAutoScaling as, String imageId, String instanceType, String keyName, double spotPrice) {
         CreateLaunchConfigurationRequest lcr = new CreateLaunchConfigurationRequest();
-        lcr.withImageId("ami-da9e2cbc")
-                .withInstanceType("t2.micro")
-                .withKeyName("labuserkey")
+        lcr.withImageId(imageId)
+                .withInstanceType(instanceType)
+                .withKeyName(keyName)
                 //.withSecurityGroups("lab-SG-PKDT24OQIGEE-EC2HostSecurityGroup-GQ9GPFW3WNZF")
-                .withLaunchConfigurationName("myLaunchConfigurationName")
+                .withLaunchConfigurationName(launchConfigurationName)
                 .withAssociatePublicIpAddress(true);
         if (spotPrice > 0) {
             lcr.withSpotPrice(Double.toString(spotPrice));
         }
 
-        String launchConfigurationName = lcr.getLaunchConfigurationName();
         CreateLaunchConfigurationResult result = as.createLaunchConfiguration(lcr);
         logger.info("Create LC result : {}", result.toString());
-        return launchConfigurationName;
+        return result.getSdkResponseMetadata().toString();
     }
 
     private List<String> getAZs(AmazonEC2 ec2) {
