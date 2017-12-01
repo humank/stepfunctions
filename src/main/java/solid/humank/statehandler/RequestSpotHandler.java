@@ -1,13 +1,5 @@
 package solid.humank.statehandler;
 
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
-import com.amazonaws.services.ec2.AmazonEC2;
-import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
-import com.amazonaws.services.ec2.model.AuthorizeSecurityGroupIngressRequest;
-import com.amazonaws.services.ec2.model.CreateSecurityGroupRequest;
-import com.amazonaws.services.ec2.model.IpPermission;
-import com.amazonaws.services.elasticmapreduce.model.CreateSecurityConfigurationRequest;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -16,9 +8,6 @@ import org.apache.logging.log4j.Logger;
 import solid.humank.model.EC2Request;
 import solid.humank.model.EC2RequestResult;
 import solid.humank.model.ExecuteResult;
-import solid.humank.uitls.ASGCreator;
-
-import java.util.ArrayList;
 
 public class RequestSpotHandler implements RequestHandler<EC2Request, EC2RequestResult> {
 

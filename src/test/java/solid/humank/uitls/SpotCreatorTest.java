@@ -25,4 +25,9 @@ public class SpotCreatorTest {
         SpotCreator creator = new SpotCreator();
         creator.showsgs();
     }
+
+    @Test
+    public void aaa(){
+
+    }
 }
