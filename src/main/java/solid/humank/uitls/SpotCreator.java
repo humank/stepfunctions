@@ -100,11 +100,7 @@ public class SpotCreator {
 
     public void create() {
 
-        EnvironmentVariableCredentialsProvider provider = new EnvironmentVariableCredentialsProvider();
-        AmazonEC2 ec2 = AmazonEC2ClientBuilder.standard()
-                .withCredentials(provider)
-                .withRegion(Regions.AP_NORTHEAST_1.getName())
-                .build();
+        AmazonEC2 ec2 = AmazonEC2ClientBuilder.defaultClient();
 
         RequestSpotInstancesRequest requestRequest = new RequestSpotInstancesRequest();
         requestRequest.setSpotPrice("0.03");
