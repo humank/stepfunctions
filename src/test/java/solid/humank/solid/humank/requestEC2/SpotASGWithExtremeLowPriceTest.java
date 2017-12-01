@@ -34,20 +34,10 @@ public class SpotASGWithExtremeLowPriceTest {
         imageId = "ami-da9e2cbc";
         instanceType = "t2.micro";
         targetGroupArn = "arn:aws:elasticloadbalancing:ap-northeast-1:584518143473:targetgroup/TG-lab-ALB-16NABNOLSNMWC/9f8c337c46e80d77";
-        tags = createTags();
+        tags = AsgUtil.defineInstanceTags();
         vpcIdSubnets = "subnet-77f8703e, subnet-43a36218";
         spotPrice = 0.001;
         securityGroups = "lab-SG-PKDT24OQIGEE-EC2HostSecurityGroup-GQ9GPFW3WNZF";
-    }
-
-    private List<Tag> createTags() {
-        List<Tag> tags = new ArrayList<Tag>();
-        tags.add(
-                new Tag().withKey("Name")
-                        .withValue("InstanceFromASG")
-                        .withPropagateAtLaunch(true)
-        );
-        return tags;
     }
 
     @Before
