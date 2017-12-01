@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import solid.humank.model.EC2Request;
 import solid.humank.model.EC2RequestResult;
 import solid.humank.model.ExecuteResult;
+import solid.humank.uitls.ASGCreator;
 
 import java.util.ArrayList;
 
@@ -41,6 +42,10 @@ public class RequestSpotHandler implements RequestHandler<EC2Request, EC2Request
         if (input.getSpotPrice() > 0.2) {
             return new EC2RequestResult(ExecuteResult.SPOT_INSTANCE_REQUEST_FAIL.toString());
         }
+
+            //TODO Create good Request PayLoad Object structure and gen json file.
+            //new ASGCreator().requestASGEC2();
+
         return new EC2RequestResult(ExecuteResult.SPOT_INSTANCT_REQUEST_SUCCESS.toString());
     }
 
