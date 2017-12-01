@@ -17,7 +17,7 @@ public class ASGCreator {
 
     public static final Logger logger = LogManager.getLogger(ASGCreator.class);
 
-    public CreateAutoScalingGroupResult requestASGOnDemandEC2(String asgName, String launchConfigurationName, String imageId, String instanceType, String targetGroupArn, List<Tag> tags, String vpcIdSubnets, String keyName) {
+    public CreateAutoScalingGroupResult requestASGEC2(String asgName, String launchConfigurationName, String imageId, String instanceType, String targetGroupArn, List<Tag> tags, String vpcIdSubnets, String keyName, double spotPrice) {
         //build client
         AmazonEC2 ec2 = AmazonEC2ClientBuilder.defaultClient();
 
@@ -29,7 +29,7 @@ public class ASGCreator {
         CreateAutoScalingGroupRequest asgRequest = new CreateAutoScalingGroupRequest();
 
         //create launch configuration
-        createLaunchConfiguration(launchConfigurationName, autoScaling, imageId, instanceType, keyName, 0);
+        createLaunchConfiguration(launchConfigurationName, autoScaling, imageId, instanceType, keyName, spotPrice);
 
         asgRequest.withAutoScalingGroupName(asgName)
                 .withLaunchConfigurationName(launchConfigurationName)

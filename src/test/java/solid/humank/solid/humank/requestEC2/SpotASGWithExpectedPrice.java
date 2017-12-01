@@ -4,9 +4,6 @@ import com.amazonaws.services.autoscaling.model.Tag;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
 import org.apache.logging.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Test;
 import solid.humank.uitls.ASGCreator;
@@ -15,8 +12,7 @@ import solid.humank.uitls.AsgUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OnDemandASGEC2Test {
-
+public class SpotASGWithExpectedPrice {
     public static final Logger logger = org.apache.logging.log4j.LogManager.getLogger(OnDemandASGEC2Test.class);
 
     String launchConfigurationName;
@@ -38,7 +34,7 @@ public class OnDemandASGEC2Test {
         targetGroupArn = "arn:aws:elasticloadbalancing:ap-northeast-1:584518143473:targetgroup/TG-lab-ALB-16NABNOLSNMWC/9f8c337c46e80d77";
         tags = createTags();
         vpcIdSubnets = "subnet-77f8703e, subnet-43a36218";
-        spotPrice = 0.0;
+        spotPrice = 0.02;
     }
 
     private List<Tag> createTags() {
@@ -65,6 +61,7 @@ public class OnDemandASGEC2Test {
         asgCreator.requestASGEC2(asgName, launchConfigurationName, imageId, instanceType, targetGroupArn, tags, vpcIdSubnets, keyName, spotPrice);
 
     }
+
 
 
 }
