@@ -12,9 +12,14 @@ public enum ExecuteResult {
             return "FAIL";
         }
     },
-    SEND_MAIL_SUCCESS{
-        public String toString(){
+    SEND_MAIL_SUCCESS {
+        public String toString() {
             return "SEND_MAIL_SUCCESS";
+        }
+    },
+    SEND_MAIL_FAIL {
+        public String toString() {
+            return "SEND_MAIL_FAIL";
         }
     }
 }

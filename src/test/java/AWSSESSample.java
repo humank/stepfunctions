@@ -1,5 +1,3 @@
-package solid.humank;
-
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
@@ -11,11 +9,11 @@ public class AWSSESSample {
 
     // Replace sender@example.com with your "From" address.
     // This address must be verified with Amazon SES.
-    static final String FROM = "sender@example.com";
+    static final String FROM = "yikaikao@amazon.com";
 
     // Replace recipient@example.com with a "To" address. If your account
     // is still in the sandbox, this address must be verified.
-    static final String TO = "recipient@example.com";
+    static final String TO = "yikaikao@gmail.com";
 
     // The configuration set to use for this email. If you do not want to use a
     // configuration set, comment the following variable and the
@@ -54,10 +52,11 @@ public class AWSSESSample {
                                             .withCharset("UTF-8").withData(TEXTBODY)))
                             .withSubject(new Content()
                                     .withCharset("UTF-8").withData(SUBJECT)))
-                    .withSource(FROM)
-                    // Comment or remove the next line if you are not using a
-                    // configuration set
-                    .withConfigurationSetName(CONFIGSET);
+                    .withSource(FROM);
+            // Comment or remove the next line if you are not using a
+            // configuration set
+            //.withConfigurationSetName(CONFIGSET);
+
             client.sendEmail(request);
             System.out.println("Email sent!");
         } catch (Exception ex) {

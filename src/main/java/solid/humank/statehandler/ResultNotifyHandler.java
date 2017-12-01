@@ -6,6 +6,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import solid.humank.model.EC2RequestResult;
 import solid.humank.model.ExecuteResult;
 import solid.humank.model.NotifyInfo;
+import solid.humank.uitls.SESMailer;
 
 public class ResultNotifyHandler implements RequestHandler<EC2RequestResult, NotifyInfo> {
     @Override
@@ -14,7 +15,10 @@ public class ResultNotifyHandler implements RequestHandler<EC2RequestResult, Not
         LambdaLogger logger = context.getLogger();
         logger.log("ready to send email");
 
-        return new NotifyInfo(ExecuteResult.SEND_MAIL_SUCCESS.toString());
+
+
+        //return new NotifyInfo(ExecuteResult.SEND_MAIL_SUCCESS.toString());
+        return new NotifyInfo();
     }
 
 }

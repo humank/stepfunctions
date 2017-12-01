@@ -1,8 +1,21 @@
 package solid.humank.model;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+
+@Getter
+@Setter
+@ToString
 public class NotifyInfo {
 
     private String subject;
+
+    private String mailFrom;
+    private String mailTo;
+    private String body;
 
     public NotifyInfo() {
 
@@ -12,13 +25,4 @@ public class NotifyInfo {
         this.subject = subject;
     }
 
-    public void setSubject(String subject) {
-
-        this.subject = subject;
-    }
-
-    public String getSubject() {
-
-        return this.subject;
-    }
 }
