@@ -9,22 +9,6 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    // configuration that holds jars to include in the jar
-    extraLibs
-}
-
-gradle.projectsEvaluated {
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation" << "-Werror"
-        if (JavaVersion.current() == JavaVersion.VERSION_1_9) {
-            options.compilerArgs << "--add-modules=java.activation,java.xml.ws.annotation"
-        }
-
-    }
-}
-
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.235'
@@ -47,13 +31,13 @@ jar {
 }
 
 task update(type:Exec){
-    workingDir '.'
+    //workingDir '.'
     commandLine 'scripts/updateLambdaFunc.sh'
     ignoreExitValue true
 }
 
 task deploy(type:Exec){
-    workingDir '.'
+    //workingDir '.'
     commandLine 'scripts/deployLambdaFunc.sh'
     ignoreExitValue true
 }

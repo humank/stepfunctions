@@ -12,4 +12,9 @@ public class LombokTest {
         Logger logger = getLogger();
         logger.info(req.toString());
     }
+
+    @Test
+    public void testForNothing(){
+
+    }
 }
