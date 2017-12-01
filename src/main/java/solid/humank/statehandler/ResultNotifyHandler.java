@@ -15,10 +15,14 @@ public class ResultNotifyHandler implements RequestHandler<EC2RequestResult, Not
         LambdaLogger logger = context.getLogger();
         logger.log("ready to send email");
 
+        String mailFrom = "yikaikao@amazon.com";
+        String mailTo = "yikaikao@gmail.com";
 
+        SESMailer mailer = new SESMailer();
+        NotifyInfo notyInfo = new NotifyInfo();
+        mailer.send(notyInfo);
 
-        //return new NotifyInfo(ExecuteResult.SEND_MAIL_SUCCESS.toString());
-        return new NotifyInfo();
+        return notyInfo;
     }
 
 }

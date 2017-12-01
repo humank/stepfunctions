@@ -2,7 +2,7 @@ Demonstrate how to use AWS Step Functions to create EC2 instances with condition
 
 At starting state, make a spot request, if fail then create EC2 on-demand instances instead.
 
-![Step Functions to create EC2 Resources](src/main/resources/images/create-ec2-step-function.png "Step Functions Flow")
+![Step Functions to create EC2 Resources](src/main/resources/images/create-ec2-step-functions-v2.png "Step Functions Flow")
 
 # Define a lambda function
 

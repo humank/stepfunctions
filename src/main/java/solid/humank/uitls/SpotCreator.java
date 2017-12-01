@@ -78,25 +78,26 @@ public class SpotCreator {
                 ec2.requestSpotInstances(requestRequest);
     }
 
-    public void showvpcs(){
+    public void showvpcs() {
         AmazonEC2 ec2 = AmazonEC2ClientBuilder.defaultClient();
         DescribeVpcsResult vpcresults = ec2.describeVpcs();
         List<Vpc> vpcs = vpcresults.getVpcs();
-        for(Vpc target : vpcs){
+        for (Vpc target : vpcs) {
             target.getVpcId();
         }
     }
 
-    public void showsgs(){
+    public void showsgs() {
         AmazonEC2 ec2 = AmazonEC2ClientBuilder.defaultClient();
 
         DescribeSecurityGroupsResult sgs = ec2.describeSecurityGroups();
         List<SecurityGroup> sgList = sgs.getSecurityGroups();
-        for(SecurityGroup sg : sgList){
+        for (SecurityGroup sg : sgList) {
             log4j.info("sg name : {}", sg.getGroupName());
             log4j.info("sg id : {}", sg.getGroupId());
         }
     }
+
     public void create() {
 
         EnvironmentVariableCredentialsProvider provider = new EnvironmentVariableCredentialsProvider();

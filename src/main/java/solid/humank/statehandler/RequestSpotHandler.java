@@ -44,37 +44,4 @@ public class RequestSpotHandler implements RequestHandler<EC2Request, EC2Request
         return new EC2RequestResult(ExecuteResult.SPOT_INSTANCT_REQUEST_SUCCESS.toString());
     }
 
-    public void createSingleEC2(EC2Request input) {
-
-        EnvironmentVariableCredentialsProvider provider = new EnvironmentVariableCredentialsProvider();
-        AmazonEC2 ec2 = AmazonEC2ClientBuilder.standard()
-                .withCredentials(provider)
-                .build();
-
-        CreateSecurityGroupRequest securityGroupRequest =
-                new CreateSecurityGroupRequest("GettingStartedGroup",
-                        "Getting Started Security Group");
-
-        ec2.createSecurityGroup(securityGroupRequest);
-
-        String ipCIDR = "10.180.32.0/0";
-
-        ArrayList<String> ipRanges = new ArrayList<String>();
-        ipRanges.add(ipCIDR);
-
-        // Open up port 22 for TCP traffic to the associated IP from above (e.g. ssh traffic).
-        ArrayList<IpPermission> ipPermissions = new ArrayList<IpPermission>();
-        IpPermission ipPermission = new IpPermission();
-        ipPermission.setIpProtocol("tcp");
-        ipPermission.setFromPort(new Integer(22));
-        ipPermission.setToPort(new Integer(22));
-        //ipPermission.setIpRanges(ipRanges);
-        ipPermissions.add(ipPermission);
-
-        AuthorizeSecurityGroupIngressRequest ingressRequest =
-                new AuthorizeSecurityGroupIngressRequest(
-                        "GettingStartedGroup", ipPermissions);
-        ec2.authorizeSecurityGroupIngress(ingressRequest);
-    }
-
 }
