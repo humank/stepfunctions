@@ -26,12 +26,12 @@ public class ASGCreator {
 
         AmazonAutoScaling autoScaling = AmazonAutoScalingClientBuilder.defaultClient();
 
-        CreateAutoScalingGroupRequest asgRequest = new CreateAutoScalingGroupRequest();
+        CreateAutoScalingGroupRequest autoScalingGroupRequest = new CreateAutoScalingGroupRequest();
 
         //create launch configuration
         createLaunchConfiguration(launchConfigurationName, autoScaling, imageId, instanceType, keyName, spotPrice, securityGroups);
 
-        asgRequest.withAutoScalingGroupName(asgName)
+        autoScalingGroupRequest.withAutoScalingGroupName(asgName)
                 .withLaunchConfigurationName(launchConfigurationName)
                 .withAvailabilityZones(azNames)
                 .withDesiredCapacity(3)
@@ -41,24 +41,30 @@ public class ASGCreator {
                 .withVPCZoneIdentifier(vpcIdSubnets)
                 .withTags(tags);
 
-        CreateAutoScalingGroupResult result = autoScaling.createAutoScalingGroup(asgRequest);
+        CreateAutoScalingGroupResult result = autoScaling.createAutoScalingGroup(autoScalingGroupRequest);
         logger.info("Running Result : {}", result);
         return result;
     }
 
     private String createLaunchConfiguration(String launchConfigurationName, AmazonAutoScaling as, String imageId, String instanceType, String keyName, double spotPrice, String securityGroups) {
-        CreateLaunchConfigurationRequest lcr = new CreateLaunchConfigurationRequest();
-        lcr.withImageId(imageId)
+        CreateLaunchConfigurationRequest launchConfigurationRequest = new CreateLaunchConfigurationRequest();
+        launchConfigurationRequest.withImageId(imageId)
                 .withInstanceType(instanceType)
                 .withKeyName(keyName)
-                .withSecurityGroups(securityGroups)
+                //.withSecurityGroups(securityGroups)
                 .withLaunchConfigurationName(launchConfigurationName)
                 .withAssociatePublicIpAddress(true);
+
+//        List<String> collectionSG = new ArrayList<String>();
+//        collectionSG.add(securityGroups);
+//        launchConfigurationRequest.withSecurityGroups(collectionSG);
+
         if (spotPrice > 0) {
-            lcr.withSpotPrice(Double.toString(spotPrice));
+            launchConfigurationRequest.withSpotPrice(Double.toString(spotPrice));
+
         }
 
-        CreateLaunchConfigurationResult result = as.createLaunchConfiguration(lcr);
+        CreateLaunchConfigurationResult result = as.createLaunchConfiguration(launchConfigurationRequest);
         logger.info("Create LC result : {}", result.toString());
         return result.getSdkResponseMetadata().toString();
     }

@@ -1,5 +1,7 @@
 package solid.humank.solid.humank.requestEC2;
 
+import com.amazonaws.ResponseMetadata;
+import com.amazonaws.http.SdkHttpMetadata;
 import com.amazonaws.services.autoscaling.model.CreateAutoScalingGroupResult;
 import com.amazonaws.services.autoscaling.model.Tag;
 import com.amazonaws.services.ec2.AmazonEC2;
@@ -15,6 +17,8 @@ import solid.humank.uitls.AsgUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class OnDemandASGEC2Test {
 
@@ -66,6 +70,9 @@ public class OnDemandASGEC2Test {
 
         ASGCreator asgCreator = new ASGCreator();
         CreateAutoScalingGroupResult result = asgCreator.requestASGEC2(asgName, launchConfigurationName, imageId, instanceType, targetGroupArn, tags, vpcIdSubnets, keyName, spotPrice, securityGroups);
+
+        ResponseMetadata metadata = result.getSdkResponseMetadata();
+        assertEquals("{}",metadata.toString());
 
 
     }

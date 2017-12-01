@@ -49,7 +49,7 @@ public class SpotCreator {
         ipPermission.setIpProtocol("tcp");
         ipPermission.setFromPort(new Integer(22));
         ipPermission.setToPort(new Integer(22));
-        ipPermission.setIpRanges(ipRanges);
+        //ipPermission.setIpRanges(ipRanges);
         ipPermissions.add(ipPermission);
 
         try {
