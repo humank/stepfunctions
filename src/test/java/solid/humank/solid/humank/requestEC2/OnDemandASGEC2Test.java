@@ -64,14 +64,14 @@ public class OnDemandASGEC2Test {
     }
 
     private String defineLCName() {
-        return String.format("LC-%s", getDateTimeInYMDHMS());
+        return String.format("LC-%s", getCurrentDateTimeInYMDHMS());
     }
 
     private String defineAsgName() {
-        return String.format("ASG-%s", getDateTimeInYMDHMS());
+        return String.format("ASG-%s", getCurrentDateTimeInYMDHMS());
     }
 
-    private String getDateTimeInYMDHMS() {
+    private String getCurrentDateTimeInYMDHMS() {
         DateTime dt = new DateTime();
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
         return dt.toString(formatter);
