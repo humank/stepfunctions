@@ -97,7 +97,7 @@ public class OnDemandASGEC2Test {
         requestFail.setOriginRqeust(ec2Request);
 
         NotifyInfo notifyInfo = new RequestSpotFailHandler().handleRequest(requestFail, LambdaMock.createMockContext());
-        assertEquals(ExecuteResult.ON_DEMAND_REQUEST_SUCCESS.toString(), notifyInfo.getEc2RequestResult().getResult());
+        assertEquals(ExecuteResult.ON_DEMAND_REQUEST_SUCCESS.toString(), notifyInfo.getResult());
 
     }
 

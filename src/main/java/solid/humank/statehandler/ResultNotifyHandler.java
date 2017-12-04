@@ -14,9 +14,6 @@ public class ResultNotifyHandler implements RequestHandler<NotifyInfo, String> {
         logger.log("ready to send email");
 
         SESMailer mailer = new SESMailer();
-        notifyInfo.setMailFrom("yikaikao@amazon.com");
-        notifyInfo.setMailTo("yikaikao@gmail.com");
-
         return mailer.send(notifyInfo);
     }
 

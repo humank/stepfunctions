@@ -15,6 +15,9 @@ public class RequestSpotSuccessHandler implements RequestHandler<EC2RequestResul
 
         NotifyInfo notifyInfo = new NotifyInfo();
         notifyInfo.setEc2RequestResult(input);
+        notifyInfo.setResult(input.getResult());
+        notifyInfo.setMailFrom("yikaikao@amazon.com");
+        notifyInfo.setMailTo("yikaikao@gmail.com");
 
         return notifyInfo;
     }

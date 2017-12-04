@@ -21,6 +21,7 @@ public class RequestSpotFailHandler implements RequestHandler<EC2RequestResult, 
         NotifyInfo notifyInfo = new NotifyInfo();
 
         notifyInfo.setEc2RequestResult(ec2RequestResult);
+        notifyInfo.setResult(ec2RequestResult.getResult());
 
         return notifyInfo;
     }

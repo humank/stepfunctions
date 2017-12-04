@@ -9,8 +9,8 @@ import lombok.ToString;
 @ToString
 public class NotifyInfo {
 
+    private String result;
     private String subject;
-
     private String mailFrom;
     private String mailTo;
     private String body;
