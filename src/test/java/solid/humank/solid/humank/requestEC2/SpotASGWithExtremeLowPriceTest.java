@@ -1,16 +1,14 @@
 package solid.humank.solid.humank.requestEC2;
 
-import com.amazonaws.services.autoscaling.model.CreateAutoScalingGroupResult;
 import com.amazonaws.services.autoscaling.model.Tag;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
-import solid.humank.uitls.ASGCreator;
 import solid.humank.uitls.AsgUtil;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SpotASGWithExtremeLowPriceTest {
@@ -50,9 +48,7 @@ public class SpotASGWithExtremeLowPriceTest {
     @Test
     public void request_for_spot_instances_at_extreme_low_price_with_asg() {
 
-        ASGCreator asgCreator = new ASGCreator();
-        CreateAutoScalingGroupResult result = asgCreator.requestASGEC2(asgName, launchConfigurationName, imageId, instanceType, targetGroupArn, tags, vpcIdSubnets, keyName, spotPrice, securityGroups);
-        logger.info(result.getSdkResponseMetadata().toString());
+        throw new NotImplementedException();
     }
 
 }

@@ -17,10 +17,11 @@ public class RequestSpotHandler implements RequestHandler<EC2Request, EC2Request
     //create spot instance
 
 
+    @Override
     public EC2RequestResult handleRequest(EC2Request input, Context context) {
 
         LambdaLogger logger = context.getLogger();
-        logger.log("Get Request spot price : " + Double.toString(input.getSpotPrice()));
+        logger.log("Get Request spot price : " + Double.toString(input.getLaunchConfigurationParams().getSpotPrice()));
         log4j.info("log info from log4j");
 
         log4j.info("Print out the input variable toString(): {}", input.toString());
@@ -28,12 +29,12 @@ public class RequestSpotHandler implements RequestHandler<EC2Request, EC2Request
         /**
          * simulate scenario, if spot price > 0.2 then fail, procees flow go to on-demand.
          */
-        if (input.getSpotPrice() > 0.2) {
+        if (input.getLaunchConfigurationParams().getSpotPrice() > 0.2) {
             return new EC2RequestResult(ExecuteResult.SPOT_INSTANCE_REQUEST_FAIL.toString());
         }
 
-            //TODO Create good Request PayLoad Object structure and gen json file.
-            //new ASGCreator().requestASGEC2();
+        //TODO Create good Request PayLoad Object structure and gen json file.
+        //new ASGCreator().requestASGEC2();
 
         return new EC2RequestResult(ExecuteResult.SPOT_INSTANCT_REQUEST_SUCCESS.toString());
     }

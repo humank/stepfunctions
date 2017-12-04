@@ -1,25 +1,14 @@
 package solid.humank.model;
 
-import lombok.*;
+import lombok.Data;
+import lombok.ToString;
 
+@Data
 @ToString
-@Getter
-@Setter
-@EqualsAndHashCode
 public class EC2Request {
 
-    private double spotPrice;
-    private String[] PublicSubnets;
-    private String applicationLoadBalancerTargetGroup;
-    private String[] ec2HostSecurityGroup;
-    private String keyPairName;
-    private String instanceType;
-    private String targetCapacity;
+    private AutoScalingGroupParams autoScalingGroupParams;
+    private LaunchConfigurationParams launchConfigurationParams;
 
-    private String runner = "Kim";
-
-    public EC2Request(){
-
-    }
 
 }

@@ -7,6 +7,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AsgUtil {
 
@@ -31,6 +32,18 @@ public class AsgUtil {
                         .withValue(String.format("ASG-%s", getCurrentDateTimeInYMDHMS()))
                         .withPropagateAtLaunch(true)
         );
+        return tags;
+    }
+
+    public static List<Tag> defineInstanceTags(Map<String, String> map) {
+        List<Tag> tags = new ArrayList<Tag>();
+        map.forEach((key, value) -> {
+            tags.add(
+                    new Tag().withKey((String) key)
+                            .withValue(String.format("ASG-%s-%s", (String) value, getCurrentDateTimeInYMDHMS()))
+                            .withPropagateAtLaunch(true)
+            );
+        });
         return tags;
     }
 }
