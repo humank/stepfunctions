@@ -35,6 +35,7 @@ public class SpotASGWithExtremeLowPriceTest {
     int maxSize;
     int minSize;
 
+
     @Before
     public void init_vpc_environment() {
         launchConfigurationName = ASGUtil.defineLCName();
@@ -44,7 +45,7 @@ public class SpotASGWithExtremeLowPriceTest {
         appTargetGroupArn = "arn:aws:elasticloadbalancing:ap-northeast-1:584518143473:targetgroup/TG-lab-ALB-16NABNOLSNMWC/9f8c337c46e80d77";
         tags = new HashMap<String, String>();
         tags.put("Name", "myInstance");
-        vpcIdSubnets = "subnet-77f8703e, subnet-43a36218";
+        vpcIdSubnets = "subnet-f7a263ac,subnet-74f8703d";
         spotPrice = 0.001;
         securityGroups = "lab-SG-PKDT24OQIGEE-EC2HostSecurityGroup-GQ9GPFW3WNZF";
         targetCapacity = 1;
