@@ -1,23 +1,19 @@
 package solid.humank.model;
 
+import lombok.Data;
+
+@Data
 public class EC2RequestResult {
 
-    public EC2RequestResult(){
+    private String metadata;
+    private String result;
+    private EC2Request originRqeust;
+
+    public EC2RequestResult() {
 
     }
 
     public EC2RequestResult(String requestResult) {
-        this.result = requestResult;
+        metadata = requestResult;
     }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        result = result;
-    }
-
-    private String result;
-
 }

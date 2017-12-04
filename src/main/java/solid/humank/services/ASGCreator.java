@@ -1,17 +1,18 @@
-package solid.humank.uitls;
+package solid.humank.services;
 
 import com.amazonaws.services.autoscaling.AmazonAutoScaling;
 import com.amazonaws.services.autoscaling.AmazonAutoScalingClientBuilder;
-import com.amazonaws.services.autoscaling.model.*;
+import com.amazonaws.services.autoscaling.model.CreateAutoScalingGroupRequest;
+import com.amazonaws.services.autoscaling.model.CreateAutoScalingGroupResult;
+import com.amazonaws.services.autoscaling.model.CreateLaunchConfigurationRequest;
+import com.amazonaws.services.autoscaling.model.CreateLaunchConfigurationResult;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
 import com.amazonaws.services.ec2.model.AvailabilityZone;
 import com.amazonaws.services.ec2.model.DescribeAvailabilityZonesResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import solid.humank.model.AutoScalingGroupParams;
-import solid.humank.model.EC2Request;
-import solid.humank.model.LaunchConfigurationParams;
+import solid.humank.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,80 +21,36 @@ public class ASGCreator {
 
     public static final Logger logger = LogManager.getLogger(ASGCreator.class);
 
-    @Deprecated
-    public CreateAutoScalingGroupResult requestASGEC2(String asgName, String launchConfigurationName, String imageId, String instanceType, String targetGroupArn, List<Tag> tags, String vpcIdSubnets, String keyName, double spotPrice, String securityGroups) {
-        //build client
-        AmazonEC2 ec2 = AmazonEC2ClientBuilder.defaultClient();
 
-        //Get current region AZs
-        List<String> azNames = getAZs(ec2);
-
-        AmazonAutoScaling autoScaling = AmazonAutoScalingClientBuilder.defaultClient();
-
-        CreateAutoScalingGroupRequest autoScalingGroupRequest = new CreateAutoScalingGroupRequest();
-
-        //create launch configuration
-        createLaunchConfiguration(launchConfigurationName, autoScaling, imageId, instanceType, keyName, spotPrice, securityGroups);
-
-        autoScalingGroupRequest.withAutoScalingGroupName(asgName)
-                .withLaunchConfigurationName(launchConfigurationName)
-                .withAvailabilityZones(azNames)
-                .withDesiredCapacity(3)
-                .withMaxSize(6)
-                .withMinSize(3)
-                .withTargetGroupARNs(targetGroupArn)
-                .withVPCZoneIdentifier(vpcIdSubnets)
-                .withTags(tags);
-
-        CreateAutoScalingGroupResult result = autoScaling.createAutoScalingGroup(autoScalingGroupRequest);
-        logger.info("Running Result : {}", result);
-        return result;
+    public EC2RequestResult requestOndemandEC2(EC2Request originRqeust) {
+        return requestEC2(originRqeust);
     }
 
-    @Deprecated
-    private String createLaunchConfiguration(String launchConfigurationName, AmazonAutoScaling as, String imageId, String instanceType, String keyName, double spotPrice, String securityGroups) {
-        CreateLaunchConfigurationRequest launchConfigurationRequest = new CreateLaunchConfigurationRequest();
-        launchConfigurationRequest.withImageId(imageId)
-                .withInstanceType(instanceType)
-                .withKeyName(keyName)
-                //.withSecurityGroups(securityGroups)
-                .withLaunchConfigurationName(launchConfigurationName)
-                .withAssociatePublicIpAddress(true);
-
-//        List<String> collectionSG = new ArrayList<String>();
-//        collectionSG.add(securityGroups);
-//        launchConfigurationRequest.withSecurityGroups(collectionSG);
-
-        if (spotPrice > 0) {
-            launchConfigurationRequest.withSpotPrice(Double.toString(spotPrice));
-
-        }
-
-        CreateLaunchConfigurationResult result = as.createLaunchConfiguration(launchConfigurationRequest);
-        logger.info("Create LC result : {}", result.toString());
-        return result.getSdkResponseMetadata().toString();
+    public EC2RequestResult requestSpotEC2(EC2Request originRqeust) {
+        return requestEC2(originRqeust);
     }
-
 
     /**
      * @param ec2Request
      * @return Combination result of launch configuration creation and auto scaling group creation.
      */
-    public String requestSpotEC2(EC2Request ec2Request) {
-        //build ec2 client
+    protected EC2RequestResult requestEC2(EC2Request ec2Request) {
+
         AmazonEC2 ec2 = AmazonEC2ClientBuilder.defaultClient();
-        //build auto scaling client
         AmazonAutoScaling autoScaling = AmazonAutoScalingClientBuilder.defaultClient();
 
-        //create launch configuration
         String lcResult = createLaunchConfiguration(autoScaling, ec2Request.getLaunchConfigurationParams());
-
-        //create auto scaling group
         String asgResult = createAutoScalingGroup(autoScaling, ec2Request.getAutoScalingGroupParams());
 
+        EC2RequestResult ec2RequestResult = new EC2RequestResult();
+        if (lcResult.equals("{}") && asgResult.equals("{}")) {
+            ec2RequestResult.setResult(ExecuteResult.SPOT_INSTANCT_REQUEST_SUCCESS.toString());
+        } else {
+            ec2RequestResult.setResult(ExecuteResult.SPOT_INSTANCE_REQUEST_FAIL.toString());
+            ec2RequestResult.setMetadata(lcResult + asgResult);
+        }
 
-        logger.info("Running Result : {0}, {1}", lcResult, asgResult);
-        return String.format("Running Result : %s , %s", lcResult, asgResult);
+        return ec2RequestResult;
     }
 
     private String createLaunchConfiguration(AmazonAutoScaling autoScaling, LaunchConfigurationParams launchConfigurationParams) {
@@ -136,7 +93,7 @@ public class ASGCreator {
                 .withMinSize(autoScalingGroupParams.getMinSize())
                 .withTargetGroupARNs(autoScalingGroupParams.getAppLoadBalancerTargetGroupArn())
                 .withVPCZoneIdentifier(autoScalingGroupParams.getVipIdSubNets())
-                .withTags(AsgUtil.defineInstanceTags(autoScalingGroupParams.getTags()));
+                .withTags(ASGUtil.defineInstanceTags(autoScalingGroupParams.getTags()));
 
 
         CreateAutoScalingGroupResult result = autoScaling.createAutoScalingGroup(autoScalingGroupRequest);
@@ -155,5 +112,6 @@ public class ASGCreator {
         }
         return azNames;
     }
+
 
 }

@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import solid.humank.model.EC2RequestResult;
 import solid.humank.model.NotifyInfo;
-import solid.humank.model.ExecuteResult;
+import solid.humank.services.ASGCreator;
 
 public class RequestSpotFailHandler implements RequestHandler<EC2RequestResult, NotifyInfo> {
 
@@ -13,10 +13,19 @@ public class RequestSpotFailHandler implements RequestHandler<EC2RequestResult, 
     public NotifyInfo handleRequest(EC2RequestResult input, Context context) {
 
         LambdaLogger logger = context.getLogger();
-        logger.log(this.toString());
-        logger.log("check param result : "+ input.getResult());
 
+        requestSpotFailThenRequestOnDemand(input);
 
-        return new NotifyInfo(ExecuteResult.SPOT_INSTANCE_REQUEST_FAIL.toString());
+        EC2RequestResult ec2RequestResult = new ASGCreator().requestOndemandEC2(input.getOriginRqeust());
+
+        NotifyInfo notifyInfo = new NotifyInfo();
+
+        notifyInfo.setEc2RequestResult(ec2RequestResult);
+
+        return notifyInfo;
+    }
+
+    private void requestSpotFailThenRequestOnDemand(EC2RequestResult input) {
+        input.getOriginRqeust().getLaunchConfigurationParams().setSpotPrice(0);
     }
 }

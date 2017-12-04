@@ -1,4 +1,4 @@
-package solid.humank.uitls;
+package solid.humank.services;
 
 import com.amazonaws.services.autoscaling.model.Tag;
 import org.joda.time.DateTime;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AsgUtil {
+public class ASGUtil {
 
     public static String defineLCName() {
         return String.format("LC-%s", getCurrentDateTimeInYMDHMS());

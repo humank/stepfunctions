@@ -21,5 +21,15 @@ public enum ExecuteResult {
         public String toString() {
             return "SEND_MAIL_FAIL";
         }
+    },
+    ON_DEMAND_REQUEST_SUCCESS {
+        public String toString() {
+            return "SUCCESS";
+        }
+    },
+    ON_DEMAND_REQUEST_FAIL {
+        public String toString() {
+            return "FAIL";
+        }
     }
 }

@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.TimeUnit;
 
-public class GreeterActivities {
+public class GreeterActivitiesTest {
 
     /**
      * create spot instance or ec2 instance
@@ -26,15 +26,10 @@ public class GreeterActivities {
     public static final Logger logger = LogManager.getLogger();
     public static final String ACTIVITY_ARN = "arn:aws:states:ap-northeast-1:584518143473:activity:get-greeting";
 
-
-    public String getGreeting(String who) throws Exception {
-        return "{\"Hello\": \"" + who + "\"}";
-    }
-
-    public static void main(final String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         logger.info("start it ");
 
-        GreeterActivities greeterActivities = new GreeterActivities();
+        GreeterActivitiesTest greeterActivitiesTest = new GreeterActivitiesTest();
         ClientConfiguration clientConfiguration = new ClientConfiguration();
         clientConfiguration.setSocketTimeout((int) TimeUnit.SECONDS.toMillis(70));
 
@@ -60,7 +55,7 @@ public class GreeterActivities {
                 try {
                     JsonNode json = Jackson.jsonNodeOf(getActivityTaskResult.getInput());
                     String greetingResult =
-                            greeterActivities.getGreeting(json.get("who").textValue());
+                            greeterActivitiesTest.getGreeting(json.get("who").textValue());
                     logger.info("I get the param from console, who : {}", greetingResult);
                     client.sendTaskSuccess(
                             new SendTaskSuccessRequest()
@@ -75,6 +70,10 @@ public class GreeterActivities {
                 logger.info("can not get tasktoken");
             }
         }
+    }
+
+    public String getGreeting(String who) throws Exception {
+        return "{\"Hello\": \"" + who + "\"}";
     }
 
 }

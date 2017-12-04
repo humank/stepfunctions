@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import solid.humank.model.EC2Request;
 import solid.humank.model.EC2RequestResult;
-import solid.humank.model.ExecuteResult;
+import solid.humank.services.ASGCreator;
 
 public class RequestSpotHandler implements RequestHandler<EC2Request, EC2RequestResult> {
 
@@ -16,27 +16,13 @@ public class RequestSpotHandler implements RequestHandler<EC2Request, EC2Request
     //http://docs.aws.amazon.com/zh_cn/sdk-for-java/v1/developer-guide/tutorial-spot-adv-java.html
     //create spot instance
 
-
     @Override
     public EC2RequestResult handleRequest(EC2Request input, Context context) {
 
         LambdaLogger logger = context.getLogger();
-        logger.log("Get Request spot price : " + Double.toString(input.getLaunchConfigurationParams().getSpotPrice()));
-        log4j.info("log info from log4j");
-
         log4j.info("Print out the input variable toString(): {}", input.toString());
 
-        /**
-         * simulate scenario, if spot price > 0.2 then fail, procees flow go to on-demand.
-         */
-        if (input.getLaunchConfigurationParams().getSpotPrice() > 0.2) {
-            return new EC2RequestResult(ExecuteResult.SPOT_INSTANCE_REQUEST_FAIL.toString());
-        }
-
-        //TODO Create good Request PayLoad Object structure and gen json file.
-        //new ASGCreator().requestASGEC2();
-
-        return new EC2RequestResult(ExecuteResult.SPOT_INSTANCT_REQUEST_SUCCESS.toString());
+        return new ASGCreator().requestSpotEC2(input);
     }
 
 }

@@ -1,6 +1,5 @@
 package solid.humank.model;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,6 +14,7 @@ public class NotifyInfo {
     private String mailFrom;
     private String mailTo;
     private String body;
+    private EC2RequestResult ec2RequestResult;
 
     public NotifyInfo() {
 

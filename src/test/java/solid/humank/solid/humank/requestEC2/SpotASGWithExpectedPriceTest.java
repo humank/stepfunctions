@@ -2,14 +2,14 @@ package solid.humank.solid.humank.requestEC2;
 
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
-import solid.humank.model.AutoScalingGroupParams;
-import solid.humank.model.EC2Request;
-import solid.humank.model.LaunchConfigurationParams;
-import solid.humank.uitls.ASGCreator;
-import solid.humank.uitls.AsgUtil;
+import solid.humank.model.*;
+import solid.humank.services.ASGUtil;
+import solid.humank.statehandler.RequestSpotHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class SpotASGWithExpectedPriceTest {
-    public static final Logger logger = org.apache.logging.log4j.LogManager.getLogger(OnDemandASGEC2Test.class);
+    public static final Logger logger = org.apache.logging.log4j.LogManager.getLogger(SpotASGWithExpectedPriceTest.class);
 
     String launchConfigurationName;
     String asgName;
@@ -36,8 +36,8 @@ public class SpotASGWithExpectedPriceTest {
 
     @Before
     public void init_vpc_environment() {
-        launchConfigurationName = AsgUtil.defineLCName();
-        asgName = AsgUtil.defineAsgName();
+        launchConfigurationName = ASGUtil.defineLCName();
+        asgName = ASGUtil.defineAsgName();
         imageId = "ami-da9e2cbc";
         instanceType = "t2.micro";
         appTargetGroupArn = "arn:aws:elasticloadbalancing:ap-northeast-1:584518143473:targetgroup/TG-lab-ALB-16NABNOLSNMWC/9f8c337c46e80d77";
@@ -46,10 +46,10 @@ public class SpotASGWithExpectedPriceTest {
         vpcIdSubnets = "subnet-77f8703e, subnet-43a36218";
         spotPrice = 0.02;
         securityGroups = "lab-SG-PKDT24OQIGEE-EC2HostSecurityGroup-GQ9GPFW3WNZF";
-        targetCapacity = 2;
-        desiredCapacity = 5;
-        maxSize = 5;
-        minSize = 2;
+        targetCapacity = 1;
+        desiredCapacity = 3;
+        maxSize = 3;
+        minSize = 1;
 
     }
 
@@ -61,11 +61,35 @@ public class SpotASGWithExpectedPriceTest {
     }
 
     @Test
-    public void request_for_on_demand_ec2_with_asg() {
+    public void request_for_expected_spotPrice_ec2_with_asg() throws JsonProcessingException {
 
-        ASGCreator asgCreator = new ASGCreator();
         EC2Request ec2Request = new EC2Request();
 
+        LaunchConfigurationParams lcParams = setupLaunchConfigurationParams();
+
+        AutoScalingGroupParams asgParams = new AutoScalingGroupParams();
+        asgParams.setAppLoadBalancerTargetGroupArn(appTargetGroupArn);
+        asgParams.setAutoScalingGroupName(asgName);
+        asgParams.setDesiredCapacity(desiredCapacity);
+        asgParams.setLaunchConfigurationName(launchConfigurationName);
+        asgParams.setVipIdSubNets(vpcIdSubnets);
+        asgParams.setMaxSize(maxSize);
+        asgParams.setMinSize(minSize);
+        asgParams.setTags(tags);
+
+        ec2Request.setLaunchConfigurationParams(lcParams);
+        ec2Request.setAutoScalingGroupParams(asgParams);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(ec2Request);
+        logger.info(json);
+
+        EC2RequestResult result = new RequestSpotHandler().handleRequest(ec2Request, LambdaMock.createMockContext());
+
+        assertEquals(ExecuteResult.SPOT_INSTANCT_REQUEST_SUCCESS.toString(), result.getResult());
+    }
+
+    private LaunchConfigurationParams setupLaunchConfigurationParams() {
         LaunchConfigurationParams lcParams = new LaunchConfigurationParams();
         lcParams.setAssociatePublicIpAddress(true);
         lcParams.setEc2HostSecurityGroup(securityGroups);
@@ -75,22 +99,6 @@ public class SpotASGWithExpectedPriceTest {
         lcParams.setLaunchConfigurationName(launchConfigurationName);
         lcParams.setSpotPrice(spotPrice);
         lcParams.setTargetCapacity(Integer.toString(targetCapacity));
-
-        AutoScalingGroupParams asgParams = new AutoScalingGroupParams();
-        asgParams.setAppLoadBalancerTargetGroupArn(appTargetGroupArn);
-        asgParams.setAutoScalingGroupName(asgName);
-        asgParams.setDesiredCapacity(desiredCapacity);
-        asgParams.setLaunchConfigurationName(launchConfigurationName);
-        asgParams.setMaxSize(maxSize);
-        asgParams.setMinSize(minSize);
-        asgParams.setTags(tags);
-
-        ec2Request.setLaunchConfigurationParams(lcParams);
-        ec2Request.setAutoScalingGroupParams(asgParams);
-        String result = asgCreator.requestSpotEC2(ec2Request);
-
-        assertEquals("{}{}", result.toString());
+        return lcParams;
     }
-
-
 }

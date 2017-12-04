@@ -1,4 +1,4 @@
-package solid.humank.uitls;
+package solid.humank.services;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
