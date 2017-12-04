@@ -7,7 +7,7 @@ aws lambda create-function \
 --runtime java8 \
 --role arn:aws:iam::584518143473:role/LambdaRole \
 --handler solid.humank.statehandler.RequestSpotHandler::handleRequest \
---vpc-config SubnetIds=subnet-77f8703e,subnet-77f8703e,SecurityGroupIds=sg-facb3583 \
+--vpc-config SubnetIds=subnet-f7a263ac,subnet-74f8703d,SecurityGroupIds=sg-facb3583 \
 --tags Name=QA-Env-Lambda-RequestSpot \
 --zip-file fileb://~/git/stepfunctions/build/libs/stepfunctions-1.0-SNAPSHOT.jar
 
@@ -19,7 +19,7 @@ aws lambda create-function \
 --runtime java8 \
 --role arn:aws:iam::584518143473:role/LambdaRole \
 --handler solid.humank.statehandler.RequestSpotFailHandler::handleRequest \
---vpc-config SubnetIds=subnet-77f8703e,subnet-77f8703e,SecurityGroupIds=sg-facb3583 \
+--vpc-config SubnetIds=subnet-f7a263ac,subnet-74f8703d,SecurityGroupIds=sg-facb3583 \
 --tags Name=QA-Env-Lambda-RequestSpot \
 --zip-file fileb://~/git/stepfunctions/build/libs/stepfunctions-1.0-SNAPSHOT.jar
 
@@ -30,7 +30,7 @@ aws lambda create-function \
 --runtime java8 \
 --role arn:aws:iam::584518143473:role/LambdaRole \
 --handler solid.humank.statehandler.RequestSpotSuccessHandler::handleRequest \
---vpc-config SubnetIds=subnet-77f8703e,subnet-77f8703e,SecurityGroupIds=sg-facb3583 \
+--vpc-config SubnetIds=subnet-f7a263ac,subnet-74f8703d,SecurityGroupIds=sg-facb3583 \
 --tags Name=QA-Env-Lambda-RequestSpot \
 --zip-file fileb://~/git/stepfunctions/build/libs/stepfunctions-1.0-SNAPSHOT.jar
 
@@ -41,6 +41,6 @@ aws lambda create-function \
 --runtime java8 \
 --role arn:aws:iam::584518143473:role/LambdaRole \
 --handler solid.humank.statehandler.ResultNotifyHandler::handleRequest \
---vpc-config SubnetIds=subnet-77f8703e,subnet-77f8703e,SecurityGroupIds=sg-facb3583 \
+--vpc-config SubnetIds=subnet-f7a263ac,subnet-74f8703d,SecurityGroupIds=sg-facb3583 \
 --tags Name=QA-Env-Lambda-RequestSpot \
 --zip-file fileb://~/git/stepfunctions/build/libs/stepfunctions-1.0-SNAPSHOT.jar
