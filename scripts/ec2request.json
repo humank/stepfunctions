@@ -1,0 +1,25 @@
+{
+    "autoScalingGroupParams": {
+        "autoScalingGroupName": "ASG-20171204172643",
+        "launchConfigurationName": "LC-20171204172642",
+        "availabilityZoneNames": null,
+        "desiredCapacity": 3,
+        "maxSize": 3,
+        "minSize": 1,
+        "appLoadBalancerTargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:584518143473:targetgroup/TG-lab-ALB-16NABNOLSNMWC/9f8c337c46e80d77",
+        "vipIdSubNets": "subnet-f7a263ac,subnet-74f8703d",
+        "tags": {
+            "Name": "myInstance"
+        }
+    },
+    "launchConfigurationParams": {
+        "launchConfigurationName": "LC-20171204172642",
+        "imageId": "ami-da9e2cbc",
+        "instanceType": "t2.micro",
+        "keyName": null,
+        "ec2HostSecurityGroup": "lab-SG-PKDT24OQIGEE-EC2HostSecurityGroup-GQ9GPFW3WNZF",
+        "associatePublicIpAddress": true,
+        "spotPrice": 0.02,
+        "targetCapacity": "1"
+    }
+}

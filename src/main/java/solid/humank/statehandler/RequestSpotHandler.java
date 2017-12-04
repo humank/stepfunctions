@@ -21,8 +21,8 @@ public class RequestSpotHandler implements RequestHandler<EC2Request, EC2Request
 
         LambdaLogger logger = context.getLogger();
         log4j.info("Print out the input variable toString(): {}", input.toString());
-
         return new ASGCreator().requestSpotEC2(input);
+
     }
 
 }

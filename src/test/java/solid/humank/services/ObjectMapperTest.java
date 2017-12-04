@@ -12,6 +12,9 @@ public class ObjectMapperTest {
     public void pojoToJsonTest() throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();
+        EC2Request request = new EC2Request();
+
+
         String result = mapper.writeValueAsString(new EC2Request());
 
         System.out.println(result);

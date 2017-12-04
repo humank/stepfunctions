@@ -1,5 +1,5 @@
 {
-  "Comment": "Create EC2 instances by SpotRequest, if fail create On-demand instances instead. Finally send SNS to notify.",
+  "Comment": "Create EC2 instances by SpotRequest, if fail create On-demand instances instead. Finally send email to notify.",
   "StartAt": "RequestSpot",
   "States": {
     "RequestSpot": {

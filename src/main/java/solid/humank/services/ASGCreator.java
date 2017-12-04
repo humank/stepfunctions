@@ -19,15 +19,15 @@ import java.util.List;
 
 public class ASGCreator {
 
-    public static final Logger logger = LogManager.getLogger(ASGCreator.class);
+    public static final Logger logger = LogManager.getRootLogger();
 
 
     public EC2RequestResult requestOndemandEC2(EC2Request originRqeust) {
         return requestEC2(originRqeust);
     }
 
-    public EC2RequestResult requestSpotEC2(EC2Request originRqeust) {
-        return requestEC2(originRqeust);
+    public EC2RequestResult requestSpotEC2(EC2Request originReqeust) {
+        return requestEC2(originReqeust);
     }
 
     /**
@@ -36,7 +36,6 @@ public class ASGCreator {
      */
     protected EC2RequestResult requestEC2(EC2Request ec2Request) {
 
-        AmazonEC2 ec2 = AmazonEC2ClientBuilder.defaultClient();
         AmazonAutoScaling autoScaling = AmazonAutoScalingClientBuilder.defaultClient();
 
         String lcResult = createLaunchConfiguration(autoScaling, ec2Request.getLaunchConfigurationParams());

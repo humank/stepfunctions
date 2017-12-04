@@ -9,7 +9,8 @@ aws lambda create-function \
 --handler solid.humank.statehandler.RequestSpotHandler::handleRequest \
 --vpc-config SubnetIds=subnet-f7a263ac,subnet-74f8703d,SecurityGroupIds=sg-facb3583 \
 --tags Name=QA-Env-Lambda-RequestSpot \
---zip-file fileb://~/git/stepfunctions/build/libs/stepfunctions-1.0-SNAPSHOT.jar
+--zip-file fileb://~/git/stepfunctions/build/libs/stepfunctions-1.0-SNAPSHOT.jar \
+--memory-szie 1024
 
 
 # Request Spot Fail
@@ -22,6 +23,8 @@ aws lambda create-function \
 --vpc-config SubnetIds=subnet-f7a263ac,subnet-74f8703d,SecurityGroupIds=sg-facb3583 \
 --tags Name=QA-Env-Lambda-RequestSpot \
 --zip-file fileb://~/git/stepfunctions/build/libs/stepfunctions-1.0-SNAPSHOT.jar
+--memory-szie 1024 \
+--timeout 300
 
 # Request Spot Success
 
@@ -33,6 +36,8 @@ aws lambda create-function \
 --vpc-config SubnetIds=subnet-f7a263ac,subnet-74f8703d,SecurityGroupIds=sg-facb3583 \
 --tags Name=QA-Env-Lambda-RequestSpot \
 --zip-file fileb://~/git/stepfunctions/build/libs/stepfunctions-1.0-SNAPSHOT.jar
+--memory-szie 1024 \
+--timeout 300
 
 # Result Notify handler
 
@@ -44,3 +49,5 @@ aws lambda create-function \
 --vpc-config SubnetIds=subnet-f7a263ac,subnet-74f8703d,SecurityGroupIds=sg-facb3583 \
 --tags Name=QA-Env-Lambda-RequestSpot \
 --zip-file fileb://~/git/stepfunctions/build/libs/stepfunctions-1.0-SNAPSHOT.jar
+--memory-szie 1024 \
+--timeout 300

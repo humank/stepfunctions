@@ -8,15 +8,15 @@
         </Lambda>
     </Appenders>
     <Loggers>
-        <Root level="info">
+        <Root level="debug">
             <AppenderRef ref="Lambda"/>
         </Root>
 
-        <logger name="log4j.logger.software.amazon.awssdk" level="debug">
+        <logger name="log4j.logger.software.amazon.awssdk" level="trace">
             <appender-ref ref="Lambda"/>
 
         </logger>
-        <logger name="log4j.logger.org.apache.http.wire" level="debug">
+        <logger name="log4j.logger.org.apache.http.wire" level="trace">
             <appender-ref ref="Lambda"/>
 
         </logger>
