@@ -30,18 +30,6 @@ dependencies {
 jar {
     from(configurations.runtime) {
         into 'lib'
-//        include('*aws-java-sdk-ec2*.jar')
-//        include('*aws-java-sdk-autoscaling*.jar')
-//        include('*org.*.jar')
-//        include('*jackson*.jar')
-//        include('*jmespath*.jar')
-//        include('*commons*.jar')
-//        include('*joda*.jar')
-//        include('*http*.jar')
-//        include('*log4j*.jar')
-//        include('*hamcrest-core*.jar')
-//        include('*snakeyaml*.jar')
-//        include('*ion*.jar')
     }
 }
 
