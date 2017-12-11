@@ -23,6 +23,7 @@ public class RequestSpotSuccessHandler implements RequestHandler<EC2RequestResul
             notifyInfo.setBody("Your request to have ec2 resources are successfully created.");
             notifyInfo.setSubject("Step Function with Lambda serve EC2 Request");
 
+
             return notifyInfo;
         } catch (Exception ex) {
             throw new EC2RequestException(ex.getMessage());
